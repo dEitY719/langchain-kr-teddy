@@ -5,7 +5,32 @@ description = "Ultimate LangChain Tutorial written in Korean by TeddyNote."
 authors = ["teddy <teddylee777@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-package-mode = false
+package-mode = true
+packages = [
+    {include = "common"},
+    {include = "01-Basic"},
+    {include = "02-Prompt"},
+    {include = "03-OutputParser"},
+    {include = "04-Model"},
+    {include = "05-Memory"},
+    {include = "06-DocumentLoader"},
+    {include = "07-TextSplitter"},
+    {include = "08-Embeddings"},
+    {include = "09-VectorStore"},
+    {include = "10-Retriever"},
+    {include = "11-Reranker"},
+    {include = "12-RAG"},
+    {include = "13-LangChain-Expression-Language"},
+    {include = "14-Chains"},
+    {include = "15-Agent"},
+    {include = "16-Evaluations"},
+    {include = "17-LangGraph"},
+    {include = "18-FineTuning"},
+    {include = "19-Streamlit"},
+    {include = "20-Projects"},
+    {include = "22-OpenAI"},
+    {include = "99-Projects"},
+]
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.13"
