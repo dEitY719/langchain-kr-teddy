@@ -1,9 +1,10 @@
-import re
 import os
-from pytube import YouTube
+import re
+
 from moviepy.editor import AudioFileClip, VideoFileClip
 from pydub import AudioSegment
 from pydub.silence import detect_nonsilent
+from pytube import YouTube
 
 
 def extract_abr(abr):

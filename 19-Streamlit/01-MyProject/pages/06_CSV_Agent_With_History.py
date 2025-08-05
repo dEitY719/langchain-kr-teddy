@@ -1,15 +1,15 @@
-from typing import List, Union
-from langchain_experimental.tools import PythonAstREPLTool
-from langchain_teddynote import logging
-from langchain_teddynote.messages import AgentStreamParser, AgentCallbacks
-from dotenv import load_dotenv
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-
 ##### 폰트 설정 #####
 import platform
+from typing import List, Union
+
+import matplotlib.font_manager as fm
+import matplotlib.pyplot as plt
+import pandas as pd
+import streamlit as st
+from dotenv import load_dotenv
+from langchain_experimental.tools import PythonAstREPLTool
+from langchain_teddynote import logging
+from langchain_teddynote.messages import AgentCallbacks, AgentStreamParser
 
 # OS 판단
 current_os = platform.system()
@@ -251,12 +251,18 @@ def ask(query):
                 if "output" in step:
                     ai_answer += step["output"]
                 # DataFrame이 출력되었는지 확인
-                if st.session_state["messages"] and st.session_state["messages"][-1][0] == MessageRole.ASSISTANT:
+                if (
+                    st.session_state["messages"]
+                    and st.session_state["messages"][-1][0] == MessageRole.ASSISTANT
+                ):
                     for content in st.session_state["messages"][-1][1]:
-                        if isinstance(content, list) and content[0] == MessageType.DATAFRAME:
+                        if (
+                            isinstance(content, list)
+                            and content[0] == MessageType.DATAFRAME
+                        ):
                             has_dataframe = True
                             break
-            
+
             # DataFrame이 출력되지 않은 경우에만 텍스트 답변 출력
             if not has_dataframe and ai_answer:
                 st.write(ai_answer)

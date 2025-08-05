@@ -1,16 +1,16 @@
-from langchain.tools import tool
 from typing import Annotated, Optional
-from langchain_experimental.tools.python.tool import PythonAstREPLTool
+
+import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
-from langchain_core.prompts import ChatPromptTemplate, load_prompt
-from langchain_openai import ChatOpenAI
-from langchain.agents import create_tool_calling_agent, AgentExecutor
-from langchain_community.chat_message_histories import ChatMessageHistory
-from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
+from langchain.agents import AgentExecutor, create_tool_calling_agent
+from langchain.tools import tool
+from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain_core.prompts import ChatPromptTemplate, load_prompt
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_experimental.tools.python.tool import PythonAstREPLTool
+from langchain_openai import ChatOpenAI
 
 load_dotenv()
 

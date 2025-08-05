@@ -1,19 +1,17 @@
+import os
 from urllib import response
-from requests import session
+
 import streamlit as st
-from langchain_core.messages.chat import ChatMessage
-from langchain_openai import ChatOpenAI
-from langchain_teddynote import logging
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from dotenv import load_dotenv
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
+from langchain_core.messages.chat import ChatMessage
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import ChatOpenAI
-from langchain_core.output_parsers import StrOutputParser
-
-from dotenv import load_dotenv
-import os
-
+from langchain_teddynote import logging
+from requests import session
 
 # API KEY 정보로드
 load_dotenv()

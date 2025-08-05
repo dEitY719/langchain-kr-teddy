@@ -1,10 +1,10 @@
-from langchain_core.output_parsers import StrOutputParser
-from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-
 from abc import ABC, abstractmethod
 from operator import itemgetter
+
 from langchain import hub
+from langchain_community.vectorstores import FAISS
+from langchain_core.output_parsers import StrOutputParser
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 
 class RetrievalChain(ABC):

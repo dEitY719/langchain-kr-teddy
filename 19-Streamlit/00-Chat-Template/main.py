@@ -1,10 +1,8 @@
 import streamlit as st
-from langchain_core.output_parsers import StrOutputParser
 from langchain_core.messages import ChatMessage
-from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import PromptTemplate, load_prompt
 from langchain_openai import ChatOpenAI
-from langchain_core.prompts import load_prompt
-
 
 st.set_page_config(page_title="나만의 ChatGPT 💬", page_icon="💬")
 st.title("나만의 ChatGPT 💬")

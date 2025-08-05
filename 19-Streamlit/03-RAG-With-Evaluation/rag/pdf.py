@@ -1,7 +1,8 @@
-from rag.base import RetrievalChain
+from typing import Annotated, List
+
 from langchain_community.document_loaders import PDFPlumberLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from typing import List, Annotated
+from rag.base import RetrievalChain
 
 
 class PDFRetrievalChain(RetrievalChain):

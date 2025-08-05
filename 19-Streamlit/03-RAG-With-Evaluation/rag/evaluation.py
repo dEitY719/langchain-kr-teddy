@@ -1,8 +1,9 @@
+from typing import Dict, List
+
 from datasets import Dataset
 from langchain_core.documents import Document
-from ragas.metrics import answer_relevancy, faithfulness
 from ragas import evaluate
-from typing import List, Dict
+from ragas.metrics import answer_relevancy, faithfulness
 
 
 class RagEvaluator:
