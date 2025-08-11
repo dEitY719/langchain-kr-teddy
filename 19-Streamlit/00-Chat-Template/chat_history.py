@@ -3,6 +3,8 @@ from langchain_core.messages import ChatMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate, load_prompt
 from langchain_openai import ChatOpenAI
+from common.gemini_llm_factory import GeminiLLMFactory
+
 
 st.set_page_config(page_title="나만의 ChatGPT 💬", page_icon="💬")
 st.title("나만의 ChatGPT 💬")
@@ -11,18 +13,25 @@ if "messages" not in st.session_state:
     st.session_state["messages"] = []
 
 
-def print_history():
+def print_message():
     for msg in st.session_state["messages"]:
         st.chat_message(msg.role).write(msg.content)
 
 
-def add_history(role, content):
+def add_message(role, content):
     st.session_state["messages"].append(ChatMessage(role=role, content=content))
 
 
 # 체인을 생성합니다.
-def create_chain(prompt, model):
+def create_chain_openai(prompt, model):
     chain = prompt | ChatOpenAI(model_name=model) | StrOutputParser()
+    return chain
+
+
+def create_chain_gemini(prompt):
+    llm_factory = GeminiLLMFactory()
+    llm = llm_factory.get_llm()
+    chain = prompt | llm | StrOutputParser()
     return chain
 
 
@@ -36,29 +45,30 @@ with st.sidebar:
         tab1.markdown(f"✅ 프롬프트가 적용되었습니다")
         prompt_template = user_text_prompt + "\n\n#Question:\n{question}\n\n#Answer:"
         prompt = PromptTemplate.from_template(prompt_template)
-        st.session_state["chain"] = create_chain(prompt, "gpt-3.5-turbo")
+        # st.session_state["chain"] = create_chain_openai(prompt, "gpt-3.5-turbo")
+        st.session_state["chain"] = create_chain_gemini(prompt)
 
     user_selected_prompt = tab2.selectbox("프리셋 선택", ["sns", "번역", "요약"])
     user_selected_apply_btn = tab2.button("프롬프트 적용", key="apply2")
     if user_selected_apply_btn:
         tab2.markdown(f"✅ 프롬프트가 적용되었습니다")
         prompt = load_prompt(f"prompts/{user_selected_prompt}.yaml", encoding="utf8")
-        st.session_state["chain"] = create_chain(prompt, "gpt-3.5-turbo")
+        st.session_state["chain"] = create_chain_gemini(prompt)
 
 if clear_btn:
     retriever = st.session_state["messages"].clear()
 
-print_history()
+print_message()
 
 
 if "chain" not in st.session_state:
     # user_prompt
     prompt_template = user_text_prompt + "\n\n#Question:\n{question}\n\n#Answer:"
     prompt = PromptTemplate.from_template(prompt_template)
-    st.session_state["chain"] = create_chain(prompt, "gpt-3.5-turbo")
+    st.session_state["chain"] = create_chain_gemini(prompt)
 
 if user_input := st.chat_input():
-    add_history("user", user_input)
+    add_message("user", user_input)
     st.chat_message("user").write(user_input)
     with st.chat_message("assistant"):
         chat_container = st.empty()
@@ -70,4 +80,4 @@ if user_input := st.chat_input():
         for chunk in stream_response:
             ai_answer += chunk
             chat_container.markdown(ai_answer)
-        add_history("ai", ai_answer)
+        add_message("ai", ai_answer)

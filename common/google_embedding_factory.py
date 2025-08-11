@@ -15,9 +15,9 @@ class GoogleEmbeddingFactory:
     _instances: Dict[str, GoogleGenerativeAIEmbeddings] = {}
 
     def __init__(self) -> None:
-        api_key = os.getenv("GOOGLE_API_KEY")
+        api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
-            raise ValueError("GOOGLE_API_KEY 환경 변수가 설정되지 않았습니다.")
+            raise ValueError("GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.")
 
         self._api_key = SecretStr(api_key)
 
