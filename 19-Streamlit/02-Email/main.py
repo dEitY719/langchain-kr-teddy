@@ -1,18 +1,24 @@
 import os
+from pathlib import Path
 
 import streamlit as st
 from dotenv import load_dotenv
+
 from langchain_community.utilities import SerpAPIWrapper
 from langchain_core.messages.chat import ChatMessage
 from langchain_core.output_parsers import PydanticOutputParser, StrOutputParser
 from langchain_core.prompts import PromptTemplate
-from langchain_core.pydantic_v1 import BaseModel, Field
-from langchain_openai import ChatOpenAI
+
+# from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic import BaseModel, Field
+
+# from langchain_openai import ChatOpenAI
+from common.gemini_llm_factory import GeminiLLMFactory
 from langchain_teddynote.prompts import load_prompt
 
 # 검색을 위한 API KEY 설정
 os.environ["SERPAPI_API_KEY"] = (
-    "e76de14ee240e0051ed8bb05d5db568dd1dc9cfcaa2b51fd83613829a85bf244"
+    "a5b65676a84fabb861004e0da985676a972ab55da755b3d8a157926ba9cfd8d4"
 )
 
 
@@ -77,20 +83,31 @@ def create_email_parsing_chain():
     # format 에 PydanticOutputParser의 부분 포맷팅(partial) 추가
     prompt = prompt.partial(format=output_parser.get_format_instructions())
 
+    # llm 생성
+    # llm = ChatOpenAI(model="gpt-4.1")
+    llm_factory = GeminiLLMFactory()
+    llm = llm_factory.get_llm()
     # 체인 생성
-    chain = prompt | ChatOpenAI(model="gpt-4.1") | output_parser
+    chain = prompt | llm | output_parser
 
     return chain
 
 
 def create_report_chain():
-    prompt = load_prompt("prompts/email.yaml", encoding="utf-8")
+
+    BASE_DIR = Path(__file__).resolve().parent
+    PROMPT_PATH = BASE_DIR / "prompts" / "email.yaml"
+
+    prompt = load_prompt(str(PROMPT_PATH), encoding="utf-8")
 
     # 출력 파서
     output_parser = StrOutputParser()
 
+    # llm = ChatOpenAI(model="gpt-4.1")
+    llm_factory = GeminiLLMFactory()
+    llm = llm_factory.get_llm()
     # 체인 생성
-    chain = prompt | ChatOpenAI(model="gpt-4.1") | output_parser
+    chain = prompt | llm | output_parser
 
     return chain
 
