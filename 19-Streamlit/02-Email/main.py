@@ -3,18 +3,16 @@ from pathlib import Path
 
 import streamlit as st
 from dotenv import load_dotenv
-
 from langchain_community.utilities import SerpAPIWrapper
 from langchain_core.messages.chat import ChatMessage
 from langchain_core.output_parsers import PydanticOutputParser, StrOutputParser
 from langchain_core.prompts import PromptTemplate
-
+from langchain_teddynote.prompts import load_prompt
 # from langchain_core.pydantic_v1 import BaseModel, Field
 from pydantic import BaseModel, Field
 
 # from langchain_openai import ChatOpenAI
 from common.gemini_llm_factory import GeminiLLMFactory
-from langchain_teddynote.prompts import load_prompt
 
 # 검색을 위한 API KEY 설정
 os.environ["SERPAPI_API_KEY"] = (
